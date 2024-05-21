@@ -89,12 +89,19 @@ function selectAnswer(e) {
         selectedButton.classList.add('incorrect');
     }
 
+    // Disable all buttons after an answer is selected
+    const answerButtons = document.querySelectorAll('.btn');
+    answerButtons.forEach(button => {
+        button.disabled = true;
+    });
+
     updateHUD();
     updateProgress();
 
     setTimeout(() => {
         currentQuestionIndex++;
         if (currentQuestionIndex < questions.length) {
+            resetState();
             showQuestion();
         } else {
             localStorage.setItem('score', score);
@@ -102,3 +109,5 @@ function selectAnswer(e) {
         }
     }, 1000);
 }
+
+
