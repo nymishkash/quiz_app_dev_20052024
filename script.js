@@ -29,8 +29,13 @@ let currentQuestionIndex = 0;
 let score = 0;
 
 document.addEventListener('DOMContentLoaded', () => {
-    showQuestion();
-    updateHUD();
+    if (window.location.pathname.endsWith('end.html')) {
+        const finalScore = localStorage.getItem('score');
+        document.getElementById('final-score').innerText = `Your score: ${finalScore}`;
+    } else {
+        showQuestion();
+        updateHUD();
+    }
 });
 
 function updateProgress() {
@@ -59,8 +64,6 @@ function showQuestion() {
         button.addEventListener('click', selectAnswer);
         answerButtonsElement.appendChild(button);
     });
-
-    updateProgress();
 }
 
 function resetState() {
@@ -81,12 +84,13 @@ function selectAnswer(e) {
 
     if (correct) {
         selectedButton.classList.add('correct');
-        score++;
+        score += 10;
     } else {
         selectedButton.classList.add('incorrect');
     }
 
     updateHUD();
+    updateProgress();
 
     setTimeout(() => {
         currentQuestionIndex++;
@@ -98,10 +102,3 @@ function selectAnswer(e) {
         }
     }, 1000);
 }
-
-document.addEventListener('DOMContentLoaded', () => {
-    if (window.location.pathname.endsWith('end.html')) {
-        const finalScore = localStorage.getItem('score');
-        document.getElementById('final-score').innerText = `Your score: ${finalScore}`;
-    }
-});
